@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div
+      class="flex py-[7.5rem] 2xl:px-[7rem] justify-center lg:justify-between"
+    >
+      <div class="lg:w-[40%] w-100">
+        <!-- Logo Component -->
+        <div
+          class="flex items-center pt-[3px] pb-[3px] gap-[7px] justify-center"
+        >
+          <img src="../../assets/icon/wpf_books.svg" />
+          <h1 class="font-black sm:text-[26px] lg:text-[30px]">
+            MyTSU Classroom
+          </h1>
+        </div>
+        <!-- Login Register Comp -->
+        <div
+          class="flex font-black gap-[24px] text-[#C3C3C3] sm:text-[26px] leading-[24px] my-10 justify-center"
+        >
+          <div class="selected"><a href="./login.html">Log in</a></div>
+          <div class="border border-black rounded p-[2px] bg-black"></div>
+          <div class=""><a href="./register.html">Register</a></div>
+        </div>
+
+        <!-- Input Container -->
+        <div>
+          <form method="post" action="" onsubmit="loginFormSubmit(event)"
+          id="loginForm">
+            <!-- Input Component -->
+            <div>
+              <label> Email </label>
+              <br />
+              <input
+                class="onboard-input focus:outline-[#2d85c5]"
+                type="email"
+                required
+                placeholder="Email"
+                name="email"
+                id="email"
+              />
+            </div>
+            <div class="my-10">
+              <label> Password </label>
+              <br />
+              <input
+                class="onboard-input focus:outline-[#2d85c5]"
+                type="password"
+                required
+                placeholder="Password"
+                name="password"
+                id="password"
+              />
+              <div class="text-right mt-[0.5em]">
+                <a class="text-end" href="./forgot_pass.html"
+                  >Forgot password?</a
+                >
+              </div>
+            </div>
+
+            <button type="submit" class="login-btn sm:py-[16px] py-[10px]">
+              Log in
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="onboard-img-cont w-[50%] hidden lg:flex items-center justify-center"
+      >
+        <img src="../../assets/img/onboard.svg" />
+      </div>
+    </div>
+  </body>
+  <script src="../../config.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/login.js"></script>
+</html>

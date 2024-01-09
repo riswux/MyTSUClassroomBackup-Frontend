@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disciplines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../node_modules/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  </head>
+  <body>
+    <header class="border-b-4 border-[#2D85C5]">
+      <nav class="flex justify-between py-8">
+        <div>
+          <div
+            class="flex items-center py-8 pt-[3px] pb-[3px] gap-[7px] justify-center"
+          >
+            <img src="../../assets/icon/wpf_books.svg" width="28px" />
+            <h1 class="font-black sm:text-[24px] lg:text-[24px]">
+              MyTSU Classroom
+            </h1>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center text-[18px] font-bold gap-[30px]">
+            <a href="./admin.html">Administration</a>
+            <div class="relative">
+              <button onclick="showProfile()">
+                <img src="../../assets/img/profile.svg" id="avatarProfile" width="48px" height="48px" />
+              </button>
+              <div id="profileModal" class="absolute profile-modal" hidden>
+                <a
+                  href="../mainPage/profile_page.html"
+                  class="flex gap-[6px] items-center mb-2 profile-link"
+                >
+                  <img
+                    src="../../assets/icon/icon_profiledark.svg"
+                    style="width: 16px; height: 16px"
+                  />
+                  <span>Profile</span>
+                </a>
+                <a
+                  id="logoutLink" href=""
+                  class="flex gap-[6px] items-center profile-link"
+                >
+                  <img
+                    src="../../assets/icon/half-circle.svg"
+                    style="width: 16px; height: 16px"
+                  />
+                  <span>Log out</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main id="disciplineMain">
+      <div class="py-10 flex items-center justify-between">
+        <span class="text-[24px] font-bold border-b-4 border-[#2D85C5]"
+          >Administration</span
+        >
+        <div>
+          <span class="font-bold mr-2">Administraion</span>
+          <span> > </span>
+          <span class="font-bold ml-2">Disciplines</span>
+        </div>
+      </div>
+      <div id="disciplineContainer" >
+        <div class="flex justify-end mb-2">
+            <div>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddDiscipline">+ Add New Discipline</button>
+            </div>
+        </div>
+      <div class="table-responsive">
+            <table id="facultiesTable" class="table w-[100%] table-hover">
+            <thead>
+                <tr class="text-left">
+                <th>No</th>
+                <th>Discipline</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="disciplineBody"></tbody>
+            </table>
+        </div>
+      </div>
+      
+        
+      
+      <!-- modal Add --> 
+      <div class="modal fade" id="modalAddDiscipline" tabindex="-1" role="dialog" aria-labelledby="modalAddDiscipline" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                <div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="mt-8">
+                    <span class="modal-title text-[24px] border-b-4 border-[#2D85C5] pb-2 font-bold" id="modalAddDiscipline">Add New Discipline</span>    
+                    <div class="mt-4">
+                        <form id="disciplineForm" onsubmit="discplineFormSubmit(event)">
+                          <div class=" mb-3">
+                            <label class="font-bold">Name</label> <br />
+                            <input class="w-100 border rounded p-2 border-[#2D85C5]" type="text" id="disciplineName" placeholder="Discipline Name" required />
+                          </div>
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Description</label> <br />
+                            <textarea id="description" name="description"></textarea>
+                          </div>
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Readings & Literature</label> <br />
+                            <textarea id="literature" name="literature"></textarea>
+                          </div>
+
+                          <div id="selectContainer">
+                            <div class=" mb-3">
+                              <label class="font-bold">Teacher</label> <br />
+                              <select id="teacherSelect0" name="teacher" class="w-full border rounded p-2 border-[#2D85C5]">
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <span class="cursor-pointer text-blue-500" onclick="addNewInput()" style="float: right;">+ add more teacher ...</span> <br />
+
+                          <div id="selectContainerGroup">
+                            <div class=" mb-3">
+                              <label class="font-bold">Group</label> <br />
+                              <select id="groupSelect0" name="group" class="w-full border rounded p-2 border-[#2D85C5]">
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <span class="cursor-pointer text-blue-500" onclick="addNewInputGroup()" style="float: right;">+ add more group ...</span> <br />
+
+                          <div class="mb-3">
+                            <label class="font-bold">Year</label> <br />
+                            <select id="yearSelect" name="year" class="w-full border rounded p-2 border-[#2D85C5]">
+                                <option disabled selected>Choose Year</option>
+                                <option value="2020-2021">2020-2021</option>
+                                <option value="2021-2022">2021-2022</option>
+                                <option value="2022-2023">2022-2023</option>
+                                <option value="2023-2024">2023-2024</option>                                
+                            </select>
+                        </div>                        
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Grade</label> <br />
+                            <select id="gradeSelect" name="grade" class="w-full border rounded p-2 border-[#2D85C5]">
+                              <option disabled selected>Choose Grade</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                            </select>
+                          </div>
+                          
+                          <div id="seasonRadio" class="mb-3">
+                            <label class="font-bold">Season</label> <br />
+                            <div class="flex items-center mb-3">
+                              <input checked id="autumn_radio" type="radio" value="Autumn" name="season-radio"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                              <label for="autumn_radio" class="ml-2 mb-0 text-sm text-gray-900 dark:text-gray-300">Autumn</label>
+                            </div>
+                          
+                            <div class="flex items-center mb-4">
+                              <input id="spring_radio" type="radio" value="Spring" name="season-radio"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                              <label for="spring_radio" class="ml-2 mb-0 text-sm text-gray-900 dark:text-gray-300">Spring</label>
+                            </div>
+                          </div>
+                          
+                          <div id="scheduleRadio" class="mb-3">
+                            <label class="font-bold">Schedule</label> <br />
+                            <div class="flex items-center mb-3">
+                              <input checked id="online_radio" type="radio" value="Online" name="schedule-radio"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                              <label for="online_radio" class="ml-2 mb-0 text-sm text-gray-900 dark:text-gray-300">Online</label>
+                            </div>
+                          
+                            <div class="flex items-center mb-4">
+                              <input id="offline_radio" type="radio" value="Offline" name="schedule-radio"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                              <label for="offline_radio" class="ml-2 mb-0 text-sm text-gray-900 dark:text-gray-300">Offline</label>
+                            </div>
+                          </div>
+                          
+
+                          <div id="buildingRoom" class="hidden ml-3">
+                            <div class=" mb-3">
+                              <label class="font-bold">Building</label> <br />
+                              <input id="buildingNumber" class="w-100 border rounded p-2 border-[#2D85C5]" type="text" placeholder="Building"/>
+                            </div>
+
+                            <div class=" mb-3">
+                              <label class="font-bold">Room</label> <br />
+                              <input id="roomNumber" class="w-100 border rounded p-2 border-[#2D85C5]" type="text" placeholder="Room"/>
+                            </div>
+                          </div>
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Day of Week</label> <br />
+                            <select id="dayofWeek" name="teacher" class="w-full border rounded p-2 border-[#2D85C5]">
+                              <option disabled selected>Choose Day of Week</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                            </select>
+                          </div>
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Start Time</label> <br />
+                            <input class="w-100 border rounded p-2 border-[#2D85C5]" type="text" id="startTime" placeholder="Enter start time" required/>
+                          </div>
+
+                          <div class=" mb-3">
+                            <label class="font-bold">Finish Time</label> <br />
+                            <input class="w-100 border rounded p-2 border-[#2D85C5]" type="text" id="finishTime" placeholder="Enter finish time" required/>
+                          </div>
+                          
+                          <div class="flex justify-end gap-2 mt-8">
+                            <button type="button" class="btn btn-edit-no" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-edit-yes">Save Changes</button>
+                          </div>
+                        </form>
+
+                    <div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+  </body>
+  <script src="../../config.js"></script>
+  <script src="../../assets/js/guest.js"></script>
+  <script src="../../assets/js/session.js"></script>
+  <script src="../../assets/js/isAdmin.js"></script>
+  <script src="../../assets/js/rte.js "></script>
+  <script>
+    // Add Input Teacher
+    var inputTeacherCountCreate = 1;
+
+    async function addNewInput() {
+        var divElement = document.createElement("div");
+        divElement.className = "mb-3";
+
+        var selectElement = document.createElement("select");
+        selectElement.id = "teacherSelect" + inputTeacherCountCreate;
+        selectElement.name = "teacher" + inputTeacherCountCreate;
+        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+
+        try {
+          const response = await fetch(`${appUrl}/api/user?role=teacher`);
+          const data = await response.json();
+
+          selectElement.innerHTML = '<option disabled selected>Choose Teacher</option>';
+
+          data.forEach(teacher => {
+            const option = document.createElement('option');
+            option.value = teacher._id;
+            option.text = teacher.name;
+            selectElement.appendChild(option);
+          });
+
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+        }
+
+        divElement.appendChild(selectElement);
+
+        document.getElementById("selectContainer").appendChild(divElement);
+
+        inputTeacherCountCreate++;
+    }
+
+  </script>
+  <script>
+    // Add Input Group
+    var inputGroupCountCreate = 1;
+
+    async function addNewInputGroup() {
+        var divElement = document.createElement("div");
+        divElement.className = "mb-3";
+
+        var selectElement = document.createElement("select");
+        selectElement.id = "groupSelect" + inputGroupCountCreate;
+        selectElement.name = "group" + inputGroupCountCreate;
+        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+
+        try {
+          const response = await fetch(`${appUrl}/api/admin/group`);
+          const data = await response.json();
+
+          selectElement.innerHTML = '<option disabled selected>Choose Group</option>';
+          data.forEach(groups => {
+            groups.group.forEach(group => {
+              const option = document.createElement('option');
+              option.value = group.groupCode;
+              option.text = group.groupCode;
+              selectElement.appendChild(option);
+            });
+          });
+
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+        }
+
+        divElement.appendChild(selectElement);
+
+        document.getElementById("selectContainerGroup").appendChild(divElement);
+
+        inputGroupCountCreate++;
+    }
+
+  </script>
+  <script src="../../assets/js/discipline.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/logout.js"></script>
+</html>

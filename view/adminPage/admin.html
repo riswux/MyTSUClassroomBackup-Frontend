@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="border-b-4 border-[#2D85C5]">
+      <nav class="flex justify-between py-8">
+        <div>
+          <div
+            class="flex items-center py-8 pt-[3px] pb-[3px] gap-[7px] justify-center"
+          >
+            <img src="../../assets/icon/wpf_books.svg" width="28px" />
+            <h1 class="font-black sm:text-[24px] lg:text-[24px]">
+              MyTSU Classroom
+            </h1>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center text-[18px] font-bold gap-[30px]">
+            <a href="./admin.html">Administration</a>
+            <div class="relative">
+              <button onclick="showProfile()">
+                <img src="../../assets/img/profile.svg" id="avatarProfile" width="48px" height="48px" />
+              </button>
+              <div id="profileModal" class="absolute profile-modal" hidden>
+                <a
+                  href="../mainPage/profile_page.html"
+                  class="flex gap-[6px] items-center mb-2 profile-link"
+                >
+                  <img
+                    src="../../assets/icon/icon_profiledark.svg"
+                    style="width: 16px; height: 16px"
+                  />
+                  <span>Profile</span>
+                </a>
+                <a
+                  id="logoutLink" href=""
+                  class="flex gap-[6px] items-center profile-link"
+                >
+                  <img
+                    src="../../assets/icon/half-circle.svg"
+                    style="width: 16px; height: 16px"
+                  />
+                  <span>Log out</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="py-10">
+        <span class="text-[24px] font-bold border-b-4 border-[#2D85C5]"
+          >Administration</span
+        >
+      </div>
+      <div class="adm-img-flex grid lg:grid-cols-3 gap-8">
+        <div
+          class="img-container relative"
+          onclick="window.location.href='./request.html'"
+        >
+          <img src="../../assets/img/adm1.svg" width="100%" />
+          <div class="flex absolute bottom-4 left-4 items-center gap-[12px]">
+            <span class="font-bold text-[18px] md:text-[24px] text-white"
+              >Requests</span
+            >
+            <img
+              src="../../assets/icon/arrow-diagonal.svg"
+              style="width: 15px; height: 15px"
+            />
+          </div>
+        </div>
+
+        <div
+          class="img-container relative"
+          onclick="window.location.href='./faculties.html'"
+        >
+          <img src="../../assets/img/adm2.svg" width="100%" />
+          <div class="flex absolute bottom-4 left-4 items-center gap-[12px]">
+            <span class="font-bold text-[18px] md:text-[24px] text-white"
+              >Faculties</span
+            >
+            <img
+              src="../../assets/icon/arrow-diagonal.svg"
+              style="width: 15px; height: 15px"
+            />
+          </div>
+        </div>
+        <div class="img-container relative"
+        onclick="window.location.href='./discipline.html'"
+        >
+          <img src="../../assets/img/adm3.svg" width="100%" />
+          <div class="flex absolute bottom-4 left-4 items-center gap-[12px]">
+            <span class="font-bold text-[18px] md:text-[24px] text-white"
+              >Disciplines</span
+            >
+            <img
+              src="../../assets/icon/arrow-diagonal.svg"
+              style="width: 15px; height: 15px"
+            />
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+<script src="../../config.js"></script>
+<script src="../../assets/js/guest.js"></script>
+<script src="../../assets/js/session.js"></script>
+<script src="../../assets/js/isAdmin.js"></script>
+<script src="../../assets/js/utils.js"></script>
+<script src="../../assets/js/logout.js"></script>

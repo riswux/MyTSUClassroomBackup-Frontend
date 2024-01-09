@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div
+      class="flex py-[7.5rem] 2xl:px-[7rem] justify-center lg:justify-between"
+    >
+      <div class="lg:w-[40%] w-100">
+        <!-- Logo Component -->
+        <div
+          class="flex items-center pt-[3px] pb-[3px] gap-[7px] justify-center"
+        >
+          <img src="../../assets/icon/wpf_books.svg" />
+          <h1 class="font-black sm:text-[26px] lg:text-[30px]">
+            MyTSU Classroom
+          </h1>
+        </div>
+        <!-- Login Register Comp -->
+        <div
+          class="flex font-black gap-[24px] text-[#C3C3C3] sm:text-[26px] leading-[24px] my-10 justify-center"
+        >
+          <div class=""><a href="./login.html">Log in</a></div>
+          <div class="border border-black rounded p-[2px] bg-black"></div>
+          <div class="selected"><a href="./register.html">Register</a></div>
+        </div>
+        <div id="registerFormCarousel">
+          <form
+            method="POST"
+            onsubmit="registFormSubmit(event)"
+            id="registerForm"
+          >
+            <div id="nameRegForm" class="">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Enter Your Name
+                </h1>
+                <p class="text-[#9F9F9F] my-5">
+                  We need to know more about you.
+                </p>
+              </div>
+
+              <div>
+                <label for="name"> Name </label>
+                <br />
+                <input
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  type="text"
+                  id="Name"
+                  placeholder="Name"
+                  name="name"
+                />
+              </div>
+            </div>
+            <div id="birthRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Enter Your Date of Birth
+                </h1>
+                <p class="text-[#9F9F9F] my-5">
+                  Let us know your wonderful day.
+                </p>
+              </div>
+
+              <div>
+                <label for="birthdate"> Date of Birth </label>
+                <br />
+                <input
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  type="date"
+                  id="birthDate"
+                  name="birthDate"
+                />
+              </div>
+            </div>
+            <div id="emailRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Enter Your Email
+                </h1>
+                <p class="text-[#9F9F9F] my-5">
+                  Input your valid email address.
+                </p>
+              </div>
+
+              <div>
+                <label for="email"> Email</label>
+                <br />
+                <input
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  type="email"
+                  id="Email"
+                  name="email"
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+            <div id="phoneRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Enter Your Phone Number
+                </h1>
+                <p class="text-[#9F9F9F] my-5">
+                  Let us know how to contact you.
+                </p>
+              </div>
+
+              <div>
+                <label for="phone_num"> Phone Number</label>
+                <br />
+                <input
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  type="text"
+                  id="phoneNum"
+                  name="phone"
+                  placeholder="+62 xxx xxx xxx"
+                />
+              </div>
+            </div>
+            <div id="avatarRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Upload Your Wonderful Avatar
+                </h1>
+                <p class="text-[#9F9F9F] my-5">Show us your happy face.</p>
+              </div>
+
+              <div>
+                <label for="avatarImg">
+                  <div>
+                    <div
+                      class="text-center w-[75%] lg:w-[40%] mx-auto p-5 py-10 border-[#D7D7D7] border rounded-[10px]"
+                    >
+                      <div class="flex justify-center">
+                        <img src="../../assets/icon/browse_photo.svg" />
+                      </div>
+                      <p
+                        id="selectedImgText"
+                        class="text-[#9F9F9F] font-[500] mt-2 truncate"
+                      >
+                        Browse Photo
+                      </p>
+                    </div>
+                  </div>
+                </label>
+
+                <input
+                  class="hidden"
+                  id="avatarImg"
+                  accept=".png, .jpg, .jpeg"
+                  type="file"
+                  name="avatar"
+                />
+              </div>
+            </div>
+            <div id="roleRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Select Your Role
+                </h1>
+                <p class="text-[#9F9F9F] my-5">Let us know your role.</p>
+              </div>
+
+              <div class="flex md:gap-[6em] justify-center">
+                <div>
+                  <input
+                    type="radio"
+                    id="teacherRadio"
+                    name="role"
+                    value="Teacher"
+                    class="hidden"
+                  />
+                  <label for="teacherRadio">
+                    <div id="teacherLabel">
+                      <img src="../../assets/img/teacher.svg" />
+                      <p id="teacherTag" class="mt-5 text-[#9F9F9F]">Teacher</p>
+                    </div>
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="studentRadio"
+                    name="role"
+                    value="Student"
+                    class="hidden"
+                  />
+                  <label for="studentRadio">
+                    <div id="studentLabel">
+                      <img src="../../assets/img/student.svg" />
+                      <p id="studentTag" class="mt-5 text-[#9F9F9F]">Student</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div id="detailRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Complete Your Details
+                </h1>
+                <p class="text-[#9F9F9F] my-5">Specify Your Details</p>
+              </div>
+
+              <div class="flex gap-6 text-[#9F9F9F]">
+                Grad
+                <div class="flex gap-2 items-center">
+                  <input id="grOne" type="radio" name="grade" value="1" />
+                  <label for="grOne">1</label>
+                </div>
+                <div class="flex gap-2 items-center">
+                  <input id="grTwo" type="radio" name="grade" value="2" />
+                  <label for="grTwo">2</label>
+                </div>
+                <div class="flex gap-2 items-center">
+                  <input id="grThree" type="radio" name="grade" value="3" />
+                  <label for="grThree">3</label>
+                </div>
+                <div class="flex gap-2 items-center">
+                  <input id="grFour" type="radio" name="grade" value="4" />
+                  <label for="grFour">4</label>
+                </div>
+              </div>
+              <div class="my-5">
+                <select
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  id="facForm"
+                  name="faculty"
+                  onchange="getEducationDirections()"
+                >
+                  <option disabled selected>Faculty</option>
+                </select>
+              </div>
+              <div class="flex gap-3">
+                <select
+                  class="onboard-input focus:outline-[#2d85c5]"
+                  id="direForm"
+                  name="direction"
+                  onchange="getGroups()"
+                >
+                  <option disabled selected>Education Direction</option>
+                </select>
+                <select
+                  class="onboard-input focus:outline-[#2d85c5] w-[55%]"
+                  id="groupForm"
+                  name="group"
+                >
+                  <option disabled selected>Group</option>
+                </select>
+              </div>
+            </div>
+            <div id="confirmRegForm" class="hidden">
+              <div>
+                <h1 class="font-black sm:text-[18px] lg:text-[24px]">
+                  Confirm Registration
+                </h1>
+                <p class="text-[#9F9F9F] my-5">
+                  We will send request to the administrator to approve your
+                  registration.
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                class="mt-10 login-btn sm:py-[16px] py-[10px]"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+
+          <div id="ctnPrevNext" class="flex mt-[6em] justify-between">
+            <div id="btnPrev" class="flex gap-[10px]">
+              <img
+                width="23px"
+                height="18px"
+                src="../../assets/icon/arrow-left.svg"
+                alt="arrow"
+              />
+              <span class="font-[500] text-[#2D85C5]">Back</span>
+            </div>
+            <div id="btnNext" class="flex gap-[10px]">
+              <span class="font-[500] text-[#2D85C5]">Next</span>
+              <img
+                width="23px"
+                height="18px"
+                src="../../assets/icon/arrow.svg"
+                alt="arrow"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="onboard-img-cont w-[50%] hidden lg:flex items-center justify-center"
+      >
+        <img src="../../assets/img/onboard.svg" />
+      </div>
+    </div>
+  </body>
+  <script src="../../config.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/index.js"></script>
+  <script src="../../fetch/data.js"></script>
+</html>

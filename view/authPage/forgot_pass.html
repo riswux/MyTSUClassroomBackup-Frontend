@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot Password</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div
+      class="flex py-[7.5rem] 2xl:px-[7rem] justify-center lg:justify-between"
+    >
+      <div class="lg:w-[40%] w-100">
+        <!-- Logo Component -->
+        <div
+          class="flex items-center pt-[3px] pb-[3px] gap-[7px] justify-center"
+        >
+          <img src="../../assets/icon/wpf_books.svg" />
+          <h1 class="font-black sm:text-[26px] lg:text-[30px]">
+            MyTSU Classroom
+          </h1>
+        </div>
+        <div>
+          <h1 class="font-black sm:text-[18px] lg:text-[24px] mt-12">
+            Forgot Password?
+          </h1>
+          <p class="text-[#9F9F9F] my-5">
+            Please enter your email address below. We will sent you a link to
+            get back into your account.
+          </p>
+        </div>
+        <!-- Input Container -->
+        <div>
+          <form
+            method=""
+            action=""
+            id="fgPassForm"
+          >
+            <!-- Input Component -->
+            <div>
+              <label> Email </label>
+              <br />
+              <input
+                class="onboard-input focus:outline-[#2d85c5] mb-[5em]"
+                type="email"
+                required
+                placeholder="Email"
+                id="email"
+                name="email"
+              />
+            </div>
+
+            <button type="button" onclick="forgotPassFormSubmit()" class="login-btn sm:py-[16px] py-[10px]">
+              Send link
+            </button>
+          </form>
+          <div class="text-center">
+            <a
+              href="./login.html"
+              type="submit"
+              class="bck-btn sm:py-[18px] py-[10px]"
+            >
+              Back to login
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="onboard-img-cont w-[50%] hidden lg:flex items-center justify-center"
+      >
+        <img src="../../assets/img/onboard.svg" />
+      </div>
+    </div>
+  </body>
+  <script src="../../config.js"></script>
+  <script>
+    // Forgot Password
+    function forgotPassFormSubmit() {
+        const email = document.getElementById('email').value;
+
+        fetch(`${appUrl}/api/forgot-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "email": email,
+            })
+        })
+        .then(response => {
+            if (response.status === 404) {
+              alert('Your account was not found.');
+            }
+            return response.json();
+        })
+        .then(data => {
+          if (data.error === false) {
+            console.log('successfully sent email to forgot password:', data);
+            window.location.href = "../authPage/forgot_pass_fb.html";
+          }
+        })
+        .catch(error => {
+            console.error('Error during Fogot Password:', error.message);
+        });
+    }
+  </script>
+</html>

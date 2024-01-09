@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="../../node_modules/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                fontFamily: {
+                    sans: ["Roboto", "sans-serif"],
+                    body: ["Roboto", "sans-serif"],
+                    mono: ["ui-monospace", "monospace"],
+                },
+            },
+            corePlugins: {
+                preflight: false,
+            },
+        };
+    </script>
+
+</head>
+
+<body>
+    <header class="border-b-4 border-[#2D85C5]">
+        <nav class="flex justify-between py-8">
+            <div>
+                <div class="flex items-center py-8 pt-[3px] pb-[3px] gap-[7px] justify-center">
+                    <img src="../../assets/icon/wpf_books.svg" width="28px" />
+                    <h1 class="font-black sm:text-[24px] lg:text-[24px]">
+                        MyTSU Classroom
+                    </h1>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center text-[18px] font-bold gap-[30px]">
+                    <a id="home">Home</a>
+                    <!-- untuk opsi Administration Page hanya admin yang bisa akses dan melihat -->
+                    <a id="administration" href="../adminPage/admin.html">Administration</a>
+                    <div class="relative">
+                        <button onclick="showProfile()">
+                            <img src="../../assets/img/profile.svg" id="avatarProfile" width="48px" height="48px" />
+                        </button>
+                        <div id="profileModal" class="absolute profile-modal" hidden>
+                            <a href="./profile_page.html" class="flex gap-[6px] items-center mb-2 profile-link">
+                                <img src="../../assets/icon/icon_profiledark.svg" style="width: 16px; height: 16px" />
+                                <span>Profile</span>
+                            </a>
+                            <a id="logoutLink" href="" class="flex gap-[6px] items-center profile-link">
+                                <img src="../../assets/icon/half-circle.svg" style="width: 16px; height: 16px" />
+                                <span>Log out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="studentMain">
+        <div class="py-10 flex items-center justify-between">
+            <div class="flex items-center gap-[18px]">
+                <div style="
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #cad4de;
+            "></div>
+                <span onclick="window.location.href='./autumn_schedule.html'" id="autumnButton"
+                    class="text-[24px] font-bold  season-text student-active">Autumn</span>
+                <div style="
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #cad4de;
+            "></div>
+                <span onclick="window.location.href='./spring_schedule.html'" id="springButton"
+                    class="text-[24px] font-bold  season-text">Spring</span>
+                <div style="
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #1f7bd6;
+            "></div>
+                <span onclick="changeHref()" id="myDiscButton"
+                    class="text-[24px] font-bold  mydiscpline-text">My Discipline</span>
+            </div>
+
+
+        </div>
+        <div id="accordionTeacher"> </div>
+
+    </main>
+</body>
+<script src="../../config.js"></script>
+<script src="../../assets/js/guest.js"></script>
+<script src="../../assets/js/session.js"></script>
+<script src="../../assets/js/rte.js"></script>
+<script>
+    fetch(`${appUrl}/api/discipline?teacherId=${decodedPayload.sub}`)
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) { 
+                const accordionContainer = document.getElementById('accordionTeacher');
+        
+                data.forEach(item => {
+                    const accordionItem = document.createElement('div');
+                    accordionItem.classList.add('border', 'border-t-0', 'border-neutral-200', 'bg-[#EFF7FF]', 'dark:border-neutral-600', 'dark:bg-neutral-800', 'rounded-b-lg');
+        
+                    const header = document.createElement('h2');
+                    header.classList.add('accordion-header', 'mb-0');
+        
+                    const button = document.createElement('button');
+                    button.classList.add(
+                        'group', 'relative', 'flex', 'w-full', 'font-bold', 'items-center', 'rounded-t-[15px]', 'border-0', 'bg-white',
+                        'px-5', 'py-4', 'text-left', 'text-base', 'text-neutral-800', 'transition', '[overflow-anchor:none]', 'hover:z-[2]',
+                        'focus:z-[3]', 'focus:outline-none', 'dark:bg-neutral-800', 'dark:text-white', '[&:not([data-te-collapse-collapsed])]:bg-white',
+                        '[&:not([data-te-collapse-collapsed])]:text-primary', '[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)]',
+                        'dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800', 'dark:[&:not([data-te-collapse-collapsed])]:text-primary-400',
+                        'dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]'
+                    );
+                    button.setAttribute('type', 'button');
+                    button.setAttribute('data-te-collapse-init', '');
+                    button.setAttribute('data-te-collapse-collapsed', '');
+                    button.setAttribute('data-te-target', `#collapse-${item.discipline._id}`);
+                    button.setAttribute('aria-expanded', 'false');
+                    button.setAttribute('aria-controls', `collapse-${item.discipline._id}`);
+                    
+                    button.innerHTML = `
+                        ${item.discipline.discipline}
+                        <span class="-mr-1 ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    `;
+        
+                    const collapseDiv = document.createElement('div');
+                    collapseDiv.classList.add('!visible', 'hidden');
+                    collapseDiv.setAttribute('data-te-collapse-item', '');
+                    collapseDiv.setAttribute('aria-labelledby', `heading-${item.discipline._id}`);
+                    collapseDiv.setAttribute('data-te-parent', '#accordionTeacher');
+                    collapseDiv.setAttribute('id', `collapse-${item.discipline._id}`);
+        
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('px-5', 'py-4');
+
+                    contentDiv.innerHTML = `
+                        <div class="flex">
+                            <div class="ml-auto mb-3">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit_disc_${item.discipline._id}">Edit</button>
+                            </div>
+                            <div class="modal fade" id="edit_disc_${item.discipline._id}" tabindex="-1" role="dialog" aria-labelledby="Label_deny_${item.discipline._id}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="mt-8">
+                                                <span class="modal-title text-[24px] border-b-4 border-[#2D85C5] pb-2 font-bold" id="exampleModalLabel">Edit Discipline</span>
+                                                <div class="mt-4">
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label class="font-bold">Name</label> <br />
+                                                            <input id="disciplineName_${item.discipline._id}" class="form-control" type="text" value="${item.discipline.discipline}" />
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="font-bold">Description</label> <br />
+                                                            <textarea id="description_edit_${item.discipline._id}" class="form-control description_edit" name="description">${item.discipline.description_htmlContent}</textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="font-bold">Readings & Literature</label> <br />
+                                                            <textarea id="literature_edit_${item.discipline._id}" class="form-control literature_edit" name="literature">${item.discipline.readingAndLiterature_htmlContent}</textarea>
+                                                        </div>
+                                                        <div id="selectContainer_${item.discipline._id}">
+                                                            <label class="font-bold">Teacher</label> <br />
+                                                        </div>
+                                                        <span class="cursor-pointer text-blue-500" onclick="addNewInputEdit('${item.discipline._id}', '${item.discipline.teacherId.length}')" style="float: right;">+ add more teacher ...</span> <br />
+                                                        <div id="selectContainerGroup_${item.discipline._id}">
+                                                            <label class="font-bold">Group</label> <br />
+                                                        </div>
+                                                        <span class="cursor-pointer text-blue-500" onclick="addNewInputEditGroup('${item.discipline._id}', '${item.discipline.teacherId.length}')" style="float: right;">+ add more group ...</span> <br />
+                                                        <div class="mb-3">
+                                                            <label class="font-bold">Year</label> <br />
+                                                            <select id="yearSelected_${item.discipline._id}" name="teacher" class="form-control">
+                                                                <option value="2020-2021" ${item.discipline.year === "2020-2021" ? 'selected' : ''}>2020-2021</option>
+                                                                <option value="2021-2022" ${item.discipline.year === "2021-2022" ? 'selected' : ''}>2021-2022</option>
+                                                                <option value="2022-2023" ${item.discipline.year === "2022-2023" ? 'selected' : ''}>2022-2023</option>
+                                                                <option value="2023-2024" ${item.discipline.year === "2023-2024" ? 'selected' : ''}>2023-2024</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="font-bold">Grade</label> <br />
+                                                            <select id="gradeSelected_${item.discipline._id}" name="teacher" class="form-control">
+                                                                <option value="1" ${item.discipline.grade === "1" ? 'selected' : ''}>1</option>
+                                                                <option value="2" ${item.discipline.grade === "2" ? 'selected' : ''}>2</option>
+                                                                <option value="3" ${item.discipline.grade === "3" ? 'selected' : ''}>3</option>
+                                                                <option value="4" ${item.discipline.grade === "4" ? 'selected' : ''}>4</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="flex justify-end gap-2 mt-8">
+                                                            <button type="button" class="btn btn-edit-no" data-dismiss="modal">Cancel</button>
+                                                            <button type="button" class="btn btn-edit-yes">Save Changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Description</strong> <br />
+                            ${item.discipline.description_htmlContent}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Readings and Literature</strong> <br />
+                            ${item.discipline.readingAndLiterature_htmlContent}
+                        </div>
+                        <div class="grid grid-cols-3 gap-y-6">
+                            <div>
+                                <strong>Teacher</strong> <br />
+                                ${item.discipline.teacherId
+                                ? item.discipline.teacherId.map(teacherId => `
+                                    <p data-teacher-id="${teacherId}"></p>
+                                    `).join('')
+                                : '-'}
+                            </div>
+                            <div>
+                                <strong>Year</strong> <br />
+                                <p>${item.discipline.year}</p>
+                            </div>
+                            <div>
+                                <strong>Grade</strong> <br />
+                                <p>${item.discipline.grade}</p>
+                            </div>
+                            ${
+                            // Check if 'schedule' is defined and not empty
+                            item.schedule && item.schedule.length > 0
+                            ? `
+                                <div>
+                                    <strong>Method</strong> <br />
+                                    <p>${item.schedule[0].method}</p>
+                                </div>
+                                <div>
+                                    <strong>Building</strong> <br />
+                                    <p>${item.schedule[0].building || '-'}</p>
+                                </div>
+                                <div>
+                                    <strong>Room</strong> <br />
+                                    <p>${item.schedule[0].room || '-'}</p>
+                                </div>
+                                <div>
+                                    <strong>Day of Week</strong> <br />
+                                    <p>${item.schedule[0].dayOfWeek}</p>
+                                </div>
+                                <div>
+                                    <strong>Start Time</strong> <br />
+                                    <p>${item.schedule[0].startTime}</p>
+                                </div>
+                                <div>
+                                    <strong>Finish Time</strong> <br />
+                                    <p>${item.schedule[0].finishTime}</p>
+                                </div>
+                            `
+                            : `
+                                <div>
+                                    <strong>Schedule Information</strong> <br />
+                                    <p>No schedule information available</p>
+                                </div>
+                            `
+                            }
+                        </div>
+                    `
+                    const tinyMceScript = document.createElement("script");
+                    tinyMceScript.src = "../../node_modules/tinymce/tinymce.min.js"; 
+                    tinyMceScript.referrerpolicy = "origin";
+                    document.head.appendChild(tinyMceScript);
+
+                    const rteScript = document.createElement("script");
+                    rteScript.src = "../../assets/js/rte.js"; 
+                    document.head.appendChild(rteScript);
+
+                    const teacherScript = document.createElement("script");
+                    teacherScript.textContent = `
+                    inputTeacherCountEdit = 0;
+                    function addNewInputEdit(id, inputTeacherCount) {
+                        console.log(id);
+                        console.log(inputTeacherCount);
+                        if (inputTeacherCountEdit == 0){
+                        inputTeacherCountEdit = inputTeacherCount;
+                        }
+                        console.log(inputTeacherCountEdit);
+                        var divElement = document.createElement("div");
+                        divElement.className = "mb-3";
+                
+                        var selectElement = document.createElement("select");
+                        selectElement.id = "teacherSelected_" + id + "_" + inputTeacherCountEdit;
+                        selectElement.name = "teacherSelected" + inputTeacherCountEdit;
+                        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+                
+                        fetch('${appUrl}/api/user?role=teacher')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                        selectElement.innerHTML = '<option disabled selected>Choose Teacher</option>';
+
+                        data.forEach(teacher => {
+                            const option = document.createElement('option');
+                            option.value = teacher._id;
+                            option.text = teacher.name;
+                            selectElement.appendChild(option);
+                        });
+                            
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
+
+                        divElement.appendChild(selectElement);
+                
+                        var targetElement = document.querySelector('#edit_disc_' + id + ' .modal-dialog .modal-content .modal-body #selectContainer_' + id);
+
+                        targetElement.appendChild(divElement);
+                
+                        inputTeacherCountEdit++
+                    }
+                    `; 
+                    contentDiv.appendChild(teacherScript);
+
+                    const groupScript = document.createElement("script");
+                    groupScript.textContent = `
+                    inputGroupCountEdit = 0;
+                    function addNewInputEditGroup(id, inputgroupCount) {
+                        if (inputGroupCountEdit == 0){
+                        inputGroupCountEdit = inputgroupCount;
+                        }
+                        console.log(inputGroupCountEdit);
+                        var divElement = document.createElement("div");
+                        divElement.className = "mb-3";
+                
+                        var selectElement = document.createElement("select");
+                        selectElement.id = "groupSelected_" + id + "_" + inputGroupCountEdit;
+                        selectElement.name = "groupSelected" + inputGroupCountEdit;
+                        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+                
+                        fetch('${appUrl}/api/admin/group')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                        selectElement.innerHTML = '<option disabled selected>Choose Group</option>';
+
+                        data.forEach(groups => {
+                            groups.group.forEach(group => {
+                            const option = document.createElement('option');
+                            option.value = group.groupCode;
+                            option.text = group.groupCode;
+                            selectElement.appendChild(option);
+                            });
+                        });
+                            
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
+
+                        divElement.appendChild(selectElement);
+                
+                        var targetElement = document.querySelector('#edit_disc_' + id + ' .modal-dialog .modal-content .modal-body #selectContainerGroup_' + id);
+
+                        targetElement.appendChild(divElement);
+                
+                        inputGroupCountEdit++
+                    }
+                    `; 
+                    contentDiv.appendChild(groupScript);
+                    ;
+
+                    header.appendChild(button);
+                    accordionItem.appendChild(header);
+                    collapseDiv.appendChild(contentDiv);
+                    accordionItem.appendChild(collapseDiv);
+                    accordionContainer.appendChild(accordionItem);
+
+                    // Update Discipline
+                    let updateButton = contentDiv.querySelector('.btn-edit-yes');
+                    updateButton.addEventListener('click', () => {
+
+                        let discip = item.discipline._id;
+
+                        var teacherSelect = document.querySelectorAll(`[id^="teacherSelected_${discip}"]`);
+                        var teacherSelectValues = [];
+
+                        teacherSelect.forEach(function(element) {
+                            teacherSelectValues.push(element.value);
+                        });
+                        
+                        var groupSelect = document.querySelectorAll(`[id^="groupSelected_${discip}"]`);
+                        var groupSelectValues = [];
+                        
+                        groupSelect.forEach(function(element) {
+                            groupSelectValues.push(parseInt(element.value));
+                        });
+
+                        const NameValue = document.getElementById(`disciplineName_${item.discipline._id}`).value;
+                        const yearValue = document.getElementById(`yearSelected_${item.discipline._id}`).value;
+                        const gradeValue = document.getElementById(`gradeSelected_${item.discipline._id}`).value;
+                        const DescValue = tinymce.get(`description_edit_${item.discipline._id}`);
+                        const htmlContentDesc = DescValue.getContent();
+                        let plainContentDesc = DescValue.getContent({ format: 'text' });
+                        const literatureValue = tinymce.get(`literature_edit_${item.discipline._id}`);
+                        const htmlContentliterature = literatureValue.getContent();
+                        let plainContentliterature = literatureValue.getContent({ format: 'text' });
+
+                        if(!plainContentDesc){
+                            plainContentDesc = " ";
+                        }
+
+                        if(!plainContentliterature){
+                            plainContentliterature = " ";
+                        }
+
+                        fetch(`${appUrl}/api/teacher/discipline/`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${savedData}`
+                            },
+                            body: JSON.stringify({
+                                "disciplineId": discip,
+                                "disciplineName": NameValue,
+                                "description_plainContent": plainContentDesc,
+                                "description_htmlContent": htmlContentDesc,
+                                "year": yearValue,
+                                "grade": gradeValue,
+                                "readingAndLiterature_plainContent": plainContentliterature,
+                                "readingAndLiterature_htmlContent": htmlContentliterature,
+                                "groupId": groupSelectValues,
+                                "teacherId": teacherSelectValues
+                            })
+                        })
+                        .then(response => {
+                            if (response.status === 401) {
+                                alert('Unauthorized access.');
+                                window.location.reload();
+                            }else if(response.status === 413){
+                                alert('File Too Large.');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Discipline updated successfully:', data);
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            // Handle errors here
+                            console.error('Error updating discipline:', error);
+                        });
+                        inputTeacherCountEdit = 0;
+                    });
+
+                    item.discipline.teacherId.forEach((id, index) => {
+                        var divElement = document.createElement("div");
+                        divElement.className = "mb-3";
+
+                        var selectElement = document.createElement("select");
+                        selectElement.id = `teacherSelected_${item.discipline._id}_${index}`;
+                        selectElement.name = "teacherSelected" + index;
+                        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+
+                        try {
+                            fetch(`${appUrl}/api/user?role=teacher`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                selectElement.innerHTML = '<option disabled selected>Choose Teacher</option>';
+
+                                data.forEach(teacher => {
+                                const option = document.createElement('option');
+                                option.value = teacher._id;
+                                option.text = teacher.name;
+                    
+                                if (option.value == id) {
+                                    option.selected = true;
+                                }
+                    
+                                selectElement.appendChild(option);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching data:', error);
+                            });
+                        } catch (error) {
+                            console.error('Error fetching data:', error.message);
+                        }
+
+                        divElement.appendChild(selectElement);
+
+                        document.getElementById(`selectContainer_${item.discipline._id}`).appendChild(divElement);
+                    });
+
+                    item.discipline.groupId.forEach((id, index) => {
+                        var divElement = document.createElement("div");
+                        divElement.className = "mb-3";
+
+                        var selectElement = document.createElement("select");
+                        selectElement.id = `groupSelected_${item.discipline._id}_${index}`;
+                        selectElement.name = "groupSelected" + index;
+                        selectElement.className = "w-full border rounded p-2 border-[#2D85C5]";
+
+                        try {
+                            fetch(`${appUrl}/api/admin/group`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                selectElement.innerHTML = '<option disabled selected>Choose Group</option>';
+
+                                data.forEach(groups => {
+                                groups.group.forEach(group => {
+                                    const option = document.createElement('option');
+                                    option.value = group.groupCode;
+                                    option.text = group.groupCode;
+                                    if (option.value == id) {
+                                    option.selected = true;
+                                    }
+                                    selectElement.appendChild(option);
+                                });
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching data:', error);
+                            });
+                        } catch (error) {
+                            console.error('Error fetching data:', error.message);
+                        }
+
+                        divElement.appendChild(selectElement);
+
+                        document.getElementById(`selectContainerGroup_${item.discipline._id}`).appendChild(divElement);
+                    });
+                });
+        
+                const buttons = document.querySelectorAll('[data-te-collapse-init]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.getAttribute('data-te-target').substring(1);
+                        const targetCollapse = document.getElementById(targetId);
+                        targetCollapse.classList.toggle('hidden');
+                        targetCollapse.classList.toggle('!visible');
+                    });
+                });
+
+                fetch(`${appUrl}/api/user?role=teacher`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(teacherDatas => {
+                    
+
+                    teacherDatas.forEach(teacherData => {
+                        const teacherId = teacherData._id;
+                        const teacherElements = document.querySelectorAll(`[data-teacher-id="${teacherId}"]`);
+
+                        teacherElements.forEach(element => {
+                            // Update the content with teacher information
+                            element.textContent = teacherData.name; // Replace with the actual property you want to display
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching teacher data:', error);
+                });
+            }else{
+                console.log('you do not have data discipline')
+                alert('you do not have data discipline')
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+<script src="../../assets/js/utils.js"></script>
+<script src="../../assets/js/logout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+
+</html>

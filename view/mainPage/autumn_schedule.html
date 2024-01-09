@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <link rel="stylesheet" href="../../main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                fontFamily: {
+                    sans: ["Roboto", "sans-serif"],
+                    body: ["Roboto", "sans-serif"],
+                    mono: ["ui-monospace", "monospace"],
+                },
+            },
+            corePlugins: {
+                preflight: false,
+            },
+        };
+    </script>
+</head>
+<body>
+    <header class="border-b-4 border-[#2D85C5]">
+        <nav class="flex justify-between py-8">
+            <div>
+                <div class="flex items-center py-8 pt-[3px] pb-[3px] gap-[7px] justify-center">
+                    <img src="../../assets/icon/wpf_books.svg" width="28px" />
+                    <h1 class="font-black sm:text-[24px] lg:text-[24px]">
+                        MyTSU Classroom
+                    </h1>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center text-[18px] font-bold gap-[30px]">
+                    <a id="home">Home</a>
+                    <!-- untuk opsi Administration Page hanya admin yang bisa akses dan melihat -->
+                    <a id="administration" href="../adminPage/admin.html">Administration</a>
+                    <div class="relative">
+                        <button onclick="showProfile()">
+                            <img src="../../assets/img/profile.svg" id="avatarProfile" width="48px" height="48px" />
+                        </button>
+                        <div id="profileModal" class="absolute profile-modal" hidden>
+                            <a href="./profile_page.html" class="flex gap-[6px] items-center mb-2 profile-link">
+                                <img src="../../assets/icon/icon_profiledark.svg" style="width: 16px; height: 16px" />
+                                <span>Profile</span>
+                            </a>
+                            <a id="logoutLink" href="" class="flex gap-[6px] items-center profile-link">
+                                <img src="../../assets/icon/half-circle.svg" style="width: 16px; height: 16px" />
+                                <span>Log out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="studentMain">
+      <div class="py-10 flex items-center justify-between">
+        <div class="flex items-center gap-[18px]">
+            <div style="
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #1f7bd6;
+        "></div>
+            <span onclick="window.location.href='./autumn_schedule.html'" id="autumnButton"
+                class="text-[24px] font-bold  season-text student-active">Autumn</span>
+            <div style="
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #cad4de;
+        "></div>
+            <span onclick="window.location.href='./spring_schedule.html'" id="springButton"
+                class="text-[24px] font-bold  season-text">Spring</span>
+            <div style="
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #cad4de;
+        "></div>
+        <!-- tergantung routing teacher/student/admin-->
+             <span onclick="changeHref()" id="myDiscButton"
+                class="text-[24px] font-bold  mydiscpline-text">My Discipline</span>
+        </div>
+
+
+      </div>
+    <div id="accordionAutumn">
+    </div>
+    </main>
+</body>
+<script src="../../config.js"></script>
+<script src="../../assets/js/guest.js"></script>
+<script src="../../assets/js/session.js"></script>
+<script>
+    fetch(`${appUrl}/api/discipline?season=autumn`)
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                const accordionContainer = document.getElementById('accordionAutumn');
+        
+                data.forEach(item => {
+                    const accordionItem = document.createElement('div');
+                    accordionItem.classList.add('border', 'border-t-0', 'border-neutral-200', 'bg-[#EFF7FF]', 'dark:border-neutral-600', 'dark:bg-neutral-800', 'rounded-b-lg');
+        
+                    const header = document.createElement('h2');
+                    header.classList.add('accordion-header', 'mb-0');
+        
+                    const button = document.createElement('button');
+                    button.classList.add(
+                    'group', 'relative', 'flex', 'w-full', 'font-bold', 'items-center', 'rounded-t-[15px]', 'border-0', 'bg-white',
+                    'px-5', 'py-4', 'text-left', 'text-base', 'text-neutral-800', 'transition', '[overflow-anchor:none]', 'hover:z-[2]',
+                    'focus:z-[3]', 'focus:outline-none', 'dark:bg-neutral-800', 'dark:text-white', '[&:not([data-te-collapse-collapsed])]:bg-white',
+                    '[&:not([data-te-collapse-collapsed])]:text-primary', '[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)]',
+                    'dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800', 'dark:[&:not([data-te-collapse-collapsed])]:text-primary-400',
+                    'dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]'
+                );
+                    button.setAttribute('type', 'button');
+                    button.setAttribute('data-te-collapse-init', '');
+                    button.setAttribute('data-te-collapse-collapsed', '');
+                    button.setAttribute('data-te-target', `#collapse-${item.discipline._id}`);
+                    button.setAttribute('aria-expanded', 'false');
+                    button.setAttribute('aria-controls', `collapse-${item.discipline._id}`);
+                    
+                    button.innerHTML = `
+                        ${item.discipline.discipline}
+                        <span class="-mr-1 ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:mr-0 group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    `;
+        
+                    const collapseDiv = document.createElement('div');
+                    collapseDiv.classList.add('!visible', 'hidden');
+                    collapseDiv.setAttribute('data-te-collapse-item', '');
+                    collapseDiv.setAttribute('aria-labelledby', `heading-${item.discipline._id}`);
+                    collapseDiv.setAttribute('data-te-parent', '#accordionAutumn');
+                    collapseDiv.setAttribute('id', `collapse-${item.discipline._id}`);
+        
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('px-5', 'py-4');
+                    contentDiv.innerHTML = `
+                        <div class="mb-3">
+                            <strong>Description</strong> <br />
+                            ${item.discipline.description_htmlContent}
+                        </div>
+                        <div class="mb-3">
+                            <strong>Readings and Literature</strong> <br />
+                            ${item.discipline.readingAndLiterature_htmlContent}
+                        </div>
+                        <div class="grid grid-cols-3 gap-y-6">
+                            <div>
+                                <strong>Teacher</strong> <br />
+                                ${item.discipline.teacherId
+                                ? item.discipline.teacherId.map(teacherId => `
+                                    <p data-teacher-id="${teacherId}"></p>
+                                    `).join('')
+                                : '-'}
+                            </div>
+                            <div>
+                                <strong>Year</strong> <br />
+                                <p>${item.discipline.year}</p>
+                            </div>
+                            <div>
+                                <strong>Grade</strong> <br />
+                                <p>${item.discipline.grade}</p>
+                            </div>
+                            <div>
+                                <strong>Method</strong> <br />
+                                <p>${item.schedule[0].method}</p>
+                            </div>
+                            <div>
+                                <strong>Building</strong> <br />
+                                <p>${item.schedule[0].building || '-'}</p>
+                            </div>
+                            <div>
+                                <strong>Room</strong> <br />
+                                <p>${item.schedule[0].room || '-'}</p>
+                            </div>
+                            <div>
+                                <strong>Day of Week</strong> <br />
+                                <p>${item.schedule[0].dayOfWeek}</p>
+                            </div>
+                            <div>
+                                <strong>Start Time</strong> <br />
+                                <p>${item.schedule[0].startTime}</p>
+                            </div>
+                            <div>
+                                <strong>Finish Time</strong> <br />
+                                <p>${item.schedule[0].finishTime}</p>
+                            </div>
+                        </div>    
+                    `;
+        
+                    header.appendChild(button);
+                    accordionItem.appendChild(header);
+                    collapseDiv.appendChild(contentDiv);
+                    accordionItem.appendChild(collapseDiv);
+                    accordionContainer.appendChild(accordionItem);
+                });
+        
+                const buttons = document.querySelectorAll('[data-te-collapse-init]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.getAttribute('data-te-target').substring(1);
+                        const targetCollapse = document.getElementById(targetId);
+                        targetCollapse.classList.toggle('hidden');
+                        targetCollapse.classList.toggle('!visible');
+                    });
+                });
+
+                fetch(`${appUrl}/api/user?role=teacher`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(teacherDatas => {
+                    
+
+                    teacherDatas.forEach(teacherData => {
+                        const teacherId = teacherData._id;
+                        const teacherElements = document.querySelectorAll(`[data-teacher-id="${teacherId}"]`);
+
+                        teacherElements.forEach(element => {
+                            // Update the content with teacher information
+                            element.textContent = teacherData.name; // Replace with the actual property you want to display
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching teacher data:', error);
+                });
+            }else{
+                console.log('autumn schedule discipline no data')
+                alert('autumn schedule discipline no data')
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+<script src="../../assets/js/utils.js"></script>
+<script src="../../assets/js/logout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+</html>
