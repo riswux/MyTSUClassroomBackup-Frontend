@@ -1,1 +1,1 @@
-const appUrl = "http://localhost:8080";
+const appUrl = "https://mytsuclassroom.my.id";
